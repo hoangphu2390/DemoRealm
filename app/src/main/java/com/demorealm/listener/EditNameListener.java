@@ -5,4 +5,5 @@ package com.demorealm.listener;
  */
 
 public interface EditNameListener {
+    public void onInputName(String name);
 }

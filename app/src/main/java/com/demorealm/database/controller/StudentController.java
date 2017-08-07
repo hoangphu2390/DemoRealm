@@ -43,22 +43,18 @@ public class StudentController {
         return id;
     }
 
-    //find all objects in the Book.class
     public RealmResults<MyStudent> getStudents() {
         return realm.where(MyStudent.class).findAll();
     }
 
-    //query a single item with the given id
     public MyStudent getStudentById(int id) {
         return realm.where(MyStudent.class).equalTo("id", id).findFirst();
     }
 
-    //check if Book.class is empty
     public boolean hasStudents() {
         return !realm.allObjects(MyStudent.class).isEmpty();
     }
 
-    //query example
     public RealmResults<MyStudent> findStudentByName(String name) {
         return realm.where(MyStudent.class)
                 .contains("name", name)

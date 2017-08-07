@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_solid_gray_radius"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_gray_radius_15"
     android:orientation="vertical">
 
     <TextView
@@ -15,9 +15,7 @@
         android:layout_marginTop="15dp"
         android:gravity="center_vertical|center_horizontal"
         android:padding="2dp"
-        android:text="We can't get your email address used to login Facebook.
-        \nPlease enable permission settings for Nappr in Facebook Setting
-        \nor enter a different email address to login."
+        android:text="Please input student's name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black"
         android:textStyle="bold" />
@@ -31,7 +29,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/rectanglewhite"
-        android:hint="Email"
+        android:hint="Name"
+        android:imeOptions="actionDone"
         android:inputType="textEmailAddress"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -39,15 +38,15 @@
         android:textColor="#000000"
         android:textSize="18sp" />
 
-
     <Button
         android:id="@+id/btnAccept"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:background="@color/list_item_title"
+        android:background="#4587f0"
         android:gravity="center"
         android:text="Accept"
-        android:textColor="@color/white" />
+        android:textColor="#FFF"
+        android:textStyle="bold" />
 
 </LinearLayout>

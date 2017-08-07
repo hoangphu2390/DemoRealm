@@ -12,4 +12,5 @@ import io.realm.RealmList;
 public interface ItemStudentListener {
     public void onItemStudent(RealmList<MyBook> books);
     public void onRemoveStudent(int id);
+    public void onEditStudent(MyStudent student);
 }

@@ -17,6 +17,7 @@ import com.demorealm.database.controller.BookController;
 import com.demorealm.database.controller.StudentController;
 import com.demorealm.database.model.MyBook;
 import com.demorealm.database.model.MyStudent;
+import com.demorealm.listener.EditNameListener;
 import com.demorealm.listener.ItemStudentListener;
 
 import java.util.ArrayList;
@@ -35,8 +36,6 @@ public class MainActivity extends AppCompatActivity implements RealmChangeListen
     RecyclerView rv_book;
     @BindView(R.id.rv_student)
     RecyclerView rv_student;
-    @BindView(R.id.et_input)
-    EditText et_input;
 
     private Realm mRealm;
     private BookAdapter bookAdapter;
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements RealmChangeListen
     private List<MyStudent> students = new ArrayList<>();
     private StudentController studentController;
     private BookController bookController;
-    private String student_name = "";
+    private String student_name = "", edit_student_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,25 +65,22 @@ public class MainActivity extends AppCompatActivity implements RealmChangeListen
 
     @OnClick(R.id.fab_add_student)
     public void addStudent() {
-        int id;
-        student_name = et_input.getText().toString().trim();
-        if (student_name.isEmpty()) {
-            Toast.makeText(this, "Please input student's name", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        DialogFactory.createInputNameDialog(MainActivity.this, new EditNameListener() {
+            @Override
+            public void onInputName(String name) {
+                student_name = name;
+                mRealm.beginTransaction();
+                MyStudent myStudent = studentController.createStudent();
+                int id = studentController.incrementId();
+                myStudent.setId(id);
+                myStudent.setName(student_name);
+                myStudent.setBooks(insertListBook_IntoStudent(id));
+                mRealm.commitTransaction();
 
-        mRealm.beginTransaction();
-        MyStudent myStudent = studentController.createStudent();
-        id = studentController.incrementId();
-        myStudent.setId(id);
-        myStudent.setName(student_name);
-        myStudent.setBooks(insertListBook_IntoStudent(id));
-        mRealm.commitTransaction();
-
-        et_input.setText("");
-        student_name = "";
-        hideKeyBoard();
-        Toast.makeText(this, "Insert student successful", Toast.LENGTH_SHORT).show();
+                student_name = "";
+                Toast.makeText(getApplicationContext(), "Insert student successful", Toast.LENGTH_SHORT).show();
+            }
+        }).show();
     }
 
     @Override
@@ -118,9 +114,34 @@ public class MainActivity extends AppCompatActivity implements RealmChangeListen
             }
         }
         mRealm.commitTransaction();
-        et_input.setText("");
         hideKeyBoard();
         Toast.makeText(this, "Remove student successful", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEditStudent(MyStudent student) {
+        final int id = student.getId();
+        student_name = student.getName();
+
+        DialogFactory.createInputNameDialog(MainActivity.this, new EditNameListener() {
+            @Override
+            public void onInputName(String name) {
+                edit_student_name = name;
+                mRealm.beginTransaction();
+                MyStudent student = studentController.getStudentById(id);
+                student.setName(name);
+
+                List<MyBook> books = bookController.findBookByIdStudent(id);
+                if (books != null && books.size() > 0) {
+                    for (int i = books.size() - 1; i >= 0; i--) {
+                        String title = books.get(i).getTitle();
+                        books.get(i).setTitle(title.replace(student_name, edit_student_name));
+                    }
+                }
+                mRealm.commitTransaction();
+                Toast.makeText(getApplicationContext(), "Edit student successful", Toast.LENGTH_SHORT).show();
+            }
+        }).show();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

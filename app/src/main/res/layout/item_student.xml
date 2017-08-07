@@ -21,6 +21,15 @@
         android:layout_weight="1" />
 
     <ImageView
+        android:id="@+id/ic_edit"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:layout_marginRight="17dp"
+        android:src="@drawable/ic_edit" />
+
+    <ImageView
         android:id="@+id/ic_remove"
         android:layout_width="25dp"
         android:layout_height="25dp"

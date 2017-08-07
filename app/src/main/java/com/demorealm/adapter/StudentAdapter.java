@@ -25,13 +25,14 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tv_name;
-        public ImageView ic_remove;
+        public ImageView ic_remove, ic_edit;
         public LinearLayout layout_student;
 
         public MyViewHolder(View view) {
             super(view);
             tv_name = (TextView) view.findViewById(R.id.tv_name);
             ic_remove = (ImageView) view.findViewById(R.id.ic_remove);
+            ic_edit = (ImageView) view.findViewById(R.id.ic_edit);
             layout_student = (LinearLayout) view.findViewById(R.id.layout_student);
         }
     }
@@ -65,6 +66,13 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.MyViewHo
             @Override
             public void onClick(View view) {
                 listener.onRemoveStudent(student.getId());
+            }
+        });
+
+        holder.ic_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onEditStudent(student);
             }
         });
     }
